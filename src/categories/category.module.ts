@@ -5,7 +5,7 @@ import { CategoryControllers } from "./controllers/category.controller";
 import { CategoryService } from "./services/category.service";
 
 @Module({
-    // imports: [ TypeOrmModule.forFeature([Category])],
+    imports: [ TypeOrmModule.forFeature([Category])],
     controllers: [CategoryControllers],
     providers: [CategoryService],
 
