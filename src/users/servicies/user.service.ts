@@ -20,7 +20,7 @@ export class UserService{
             throw new NotFoundException(`User #${id} not found`);
         }
         
-        return user;
+        return {user};
 
     }
 
@@ -29,7 +29,7 @@ export class UserService{
 
         
         if (user) {
-            throw new NotFoundException(`User with email ${data.email} already exists.`)
+            throw new NotFoundException(`Product with email ${data.email} already exists.`)
         }
         const newUser = await this.userRepo.create(data);
         return this.userRepo.save(newUser);
@@ -38,14 +38,17 @@ export class UserService{
 
     async update(id: number, data: UpdateUserDto) {
         const user = await this.findById(id);
-        this.userRepo.merge(user, data);
-        return this.userRepo.save(user);
+        this.userRepo.merge(user.user, data);
+        return this.userRepo.save(user.user);
 
 
     }
 
-    remove(id:number){
+    async remove(id:number){
         const user = this.findById(id);
+        if (!user) {
+            throw new NotFoundException(`User #${id} not found`);
+        }
         return this.userRepo.delete(id)
     }
 }
