@@ -1,9 +1,11 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { Category } from 'src/categories/entities/category.entity';
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class Product {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
 
     @Column({type: 'varchar', length:255, unique: true })
     name: string;
@@ -17,7 +19,19 @@ export class Product {
     @Column({type: 'int'})
     stock: number;
 
-    @Column({type: 'varchar'})
-    category: string;
+    @CreateDateColumn({
+        type: 'timestamptz',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
+    createAt: Date;
+
+    @UpdateDateColumn({
+        type: 'timestamptz',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
+    updateAt: Date
+
+    @ManyToOne(() => Category, (category => category.products))
+    category:Category;
 
 }

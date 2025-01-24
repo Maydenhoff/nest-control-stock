@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, ValidationPipe } from "@nestjs/common";
 import { CreateUserDto, UpdateUserDto } from "../dtos/user.dto";
 import { UserService } from "../servicies/user.service";
+import { UUID } from "crypto";
 
 @Controller('users')
 export class UserController{
@@ -19,20 +20,20 @@ export class UserController{
     }
 
     @Get('/:id')
-    findByUser(@Param('id', ParseIntPipe) id:number){
+    findByUser(@Param('id') id:UUID){
         return this.userService.findById(id);
     }
 
     @Put(':id')
     update(
-        @Param('id', ParseIntPipe) id:number,
+        @Param('id') id:UUID,
         @Body() payload: UpdateUserDto,
     ) {
         return this.userService.update(id, payload)
     }
 
     @Delete(':id')
-    remove(@Param('id', ParseIntPipe) id:number){
+    remove(@Param('id') id:UUID){
 
         return this.userService.remove(id);
     }
